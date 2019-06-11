@@ -5,7 +5,7 @@ Plugin Name: mnmlWP Basic Shortcodes
 Plugin URI: https://mnmlwp.de
 Description: This plugin provides the basic shortcodes for the mnmlWP Theme.
 Author: Sebastian Honert
-Version: 0.1.8
+Version: 0.1.9
 Author URI: https://sebastianhonert.com
 Text Domain: mnmlwp-shortcodes
 License: GNU General Public License v2 or later
@@ -16,10 +16,29 @@ class MNMLWP_Shortcodes
 {
     function __construct()
     {
+        add_action('after_setup_theme', array( $this, 'mnmlwp_fix_wpautop' ));
         add_action('after_setup_theme', array( $this, 'mnmlwp_i18n' ));
         add_action('wp_enqueue_scripts', array( $this, 'load_scripts_and_styles' ));
         add_action('init', array( $this, 'mnmlwp_shortcodes' ));
     }
+    
+    function mnmlwp_fix_wpautop()
+    {
+        function mnmlwp_fix_shortcodes($content)
+        {
+            $array = array (
+                '<p>[' => '[',
+                ']</p>' => ']',
+                ']<br />' => ']'
+            );
+            
+            $content = strtr($content, $array);
+
+            return $content;
+        }
+        
+        add_filter('the_content', 'mnmlwp_fix_shortcodes', 10, 1);
+    }    
 
     function mnmlwp_i18n()
     {
@@ -39,11 +58,6 @@ class MNMLWP_Shortcodes
 
     function mnmlwp_shortcodes()
     {
-        // Remove wpautop from shortcodes
-        remove_filter( 'the_content', 'wpautop' );
-        add_filter( 'the_content', 'wpautop' , 99 );
-        add_filter( 'the_content', 'shortcode_unautop', 100 );
-
         // Site URL
         if( ! function_exists('mnmlwp_shortcode_site_url') )
         {
@@ -870,9 +884,11 @@ class MNMLWP_Shortcodes
                     'style' => '',
                 ), $atts ) );
                 
-                $content = '<pre class="mnmlwp-code ' . $class . '" style="' . $style . '">' . htmlentities( $content ) . '</pre>';
+                $content = str_replace('<br />', "\r", $content);
                 
-                return $content;
+                $content = '<pre class="mnmlwp-code ' . $class . '" style="' . $style . '">' . htmlentities( $content ) . '</pre>';
+
+                return shortcode_unautop( $content );
             }
         }
 
