@@ -30,4 +30,22 @@ jQuery(document).ready(function($) {
         $(this).toggleClass('active').next('.mnmlwp-flyout-content').stop().slideToggle(350);
     });
 
+    // Video Cover
+    $('.mnmlwp-video-container').on('click', function() {
+        var iframe;
+        var id = $(this).data('id');
+        var platform = $(this).data('platform');
+
+        if( ! id || ! platform )
+            return;
+
+        if( platform === 'youtube' ) {
+            iframe = '<iframe src="//www.youtube.com/embed/' + id + '?autoplay=1" height="240" width="320" allow="autoplay" allowfullscreen=""></iframe>';
+        } else if( platform === 'vimeo' ) {
+            iframe ='<iframe src="https://player.vimeo.com/video/' + id + '" allowfullscreen=""></iframe>';
+        }
+
+        $(this).html(iframe);
+    });
+
 });

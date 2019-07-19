@@ -2,10 +2,10 @@
 
 /*
 Plugin Name: mnmlWP Basic Shortcodes
-Plugin URI: https://mnmlwp.de
+Plugin URI: https://minimalwordpress.com
 Description: This plugin provides the basic shortcodes for the mnmlWP Theme.
 Author: Sebastian Honert
-Version: 0.1.9
+Version: 0.2.0
 Author URI: https://sebastianhonert.com
 Text Domain: mnmlwp-shortcodes
 License: GNU General Public License v2 or later
@@ -761,13 +761,17 @@ class MNMLWP_Shortcodes
                     'id' => '',
                     'class' => '',
                     'style' => '',
+                    'cover' => '',
                 ), $atts ) );
 
                 if( ! $identifier && $id ) {
                     $identifier = $id;
                 }
 
-                return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '"><iframe src="//www.youtube.com/embed/' . $identifier . '" height="240" width="320" allowfullscreen=""></iframe></div></div>';
+                $iframe_html = $cover ? '' : '<iframe src="//www.youtube.com/embed/' . $identifier . '" height="240" width="320" allowfullscreen=""></iframe>';
+                $cover_html = $cover ? '<div class="mnmlwp-cover" style="background:url(' . $cover . ')"></div><div class="mnmlwp-cover-play-button"><img src="' . mnmlwp_assets_url() . '/img/play.png" alt="" /></div>' : '';
+                
+                return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '" data-id="' . $identifier . '" data-platform="youtube">' . $cover_html . $iframe_html . '</div></div>';                
             }
         }
 
@@ -783,13 +787,17 @@ class MNMLWP_Shortcodes
                     'id' => '',
                     'class' => '',
                     'style' => '',
+                    'cover' => '',
                 ), $atts ) );
 
                 if( ! $identifier && $id ) {
                     $identifier = $id;
                 }
 
-                return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '"><iframe src="https://player.vimeo.com/video/' . $identifier . '" allowfullscreen=""></iframe></div></div>';
+                $iframe_html = $cover ? '' : '<iframe src="https://player.vimeo.com/video/' . $identifier . '" allowfullscreen=""></iframe>';
+                $cover_html = $cover ? '<div class="mnmlwp-cover" style="background:url(' . $cover . ')"></div><div class="mnmlwp-cover-play-button"><img src="' . mnmlwp_assets_url() . '/img/play.png" alt="" /></div>' : '';
+
+                return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '" data-id="' . $identifier . '" data-platform="vimeo">' . $cover_html . $iframe_html . '</div></div>';
             }
         }
 
