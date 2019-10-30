@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
             return;
 
         if( platform === 'youtube' ) {
-            iframe = '<iframe src="//www.youtube.com/embed/' + id + '?autoplay=1" height="240" width="320" allow="autoplay" allowfullscreen=""></iframe>';
+            iframe = '<iframe src="//www.youtube.com/embed/' + id + '?autoplay=1&rel=0" height="240" width="320" allow="autoplay" allowfullscreen=""></iframe>';
         } else if( platform === 'vimeo' ) {
             iframe ='<iframe src="https://player.vimeo.com/video/' + id + '" allowfullscreen=""></iframe>';
         }

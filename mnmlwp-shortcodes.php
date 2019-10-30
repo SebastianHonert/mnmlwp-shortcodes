@@ -768,7 +768,7 @@ class MNMLWP_Shortcodes
                     $identifier = $id;
                 }
 
-                $iframe_html = $cover ? '' : '<iframe src="//www.youtube.com/embed/' . $identifier . '" height="240" width="320" allowfullscreen=""></iframe>';
+                $iframe_html = $cover ? '' : '<iframe src="//www.youtube.com/embed/' . $identifier . '?autoplay=1&rel=0" height="240" width="320" allowfullscreen=""></iframe>';
                 $cover_html = $cover ? '<div class="mnmlwp-cover" style="background:url(' . $cover . ')"></div><div class="mnmlwp-cover-play-button"><img src="' . mnmlwp_assets_url() . '/img/play.png" alt="" /></div>' : '';
                 
                 return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '" data-id="' . $identifier . '" data-platform="youtube">' . $cover_html . $iframe_html . '</div></div>';                
@@ -835,6 +835,7 @@ class MNMLWP_Shortcodes
                     'gallery' => '',
                     'columns' => 4,
                     'spacing' => 3,
+                    'image_size' => '',
                 ), $atts ) );
 
                 if( ! $gallery )
@@ -843,6 +844,9 @@ class MNMLWP_Shortcodes
                 if( ! $ids )
                     return '<p>' . esc_html__('Missing ids in shortcode [gallery ids="1,2,3..."]', 'mnmlwp-shortcodes') . '</p>';
 
+                $available_size = has_image_size( 'mnmlwp-640' ) ? 'mnmlwp-640' : 'medium';
+                $image_size = ( $image_size && has_image_size( $image_size ) ) ? $image_size : $available_size;
+                
                 $ids = explode(',', $ids);
 
                 foreach( $ids as $key => $id )
@@ -857,7 +861,7 @@ class MNMLWP_Shortcodes
                 {
                     $key++;
 
-                    $url = wp_get_attachment_image_src( $id, 'mnmlwp-800' );
+                    $url = wp_get_attachment_image_src( $id, $image_size );
                     $url_original = wp_get_attachment_url( $id );
 
                     $title = get_the_title( $id );
