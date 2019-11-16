@@ -5,7 +5,7 @@ Plugin Name: mnmlWP Basic Shortcodes
 Plugin URI: https://minimalwordpress.com
 Description: This plugin provides the basic shortcodes for the mnmlWP Theme.
 Author: Sebastian Honert
-Version: 0.2.0
+Version: 0.2.1
 Author URI: https://sebastianhonert.com
 Text Domain: mnmlwp-shortcodes
 License: GNU General Public License v2 or later
@@ -174,6 +174,22 @@ class MNMLWP_Shortcodes
 
         add_shortcode( 'clear_column', 'mnmlwp_shortcode_clear_column' );
         add_shortcode( 'clear_columns', 'mnmlwp_shortcode_clear_column' );
+
+        // Clearfix columns
+        if( ! function_exists('mnmlwp_shortcode_columns_clearfix') )
+        {
+            function mnmlwp_shortcode_columns_clearfix( $atts, $content = null )
+            {
+                extract( shortcode_atts( array (
+                    'style' => '',
+                    'class' => '',
+                ), $atts ) );
+
+                return '<div class="mnmlwp-columns ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
+            }
+        }
+
+        add_shortcode( 'mnmlwp_columns', 'mnmlwp_shortcode_columns_clearfix' );
 
         // Full Width Column
         if( ! function_exists('mnmlwp_shortcode_column_full_width') )
@@ -771,7 +787,7 @@ class MNMLWP_Shortcodes
                 $iframe_html = $cover ? '' : '<iframe src="//www.youtube.com/embed/' . $identifier . '?autoplay=1&rel=0" height="240" width="320" allowfullscreen=""></iframe>';
                 $cover_html = $cover ? '<div class="mnmlwp-cover" style="background:url(' . $cover . ')"></div><div class="mnmlwp-cover-play-button"><img src="' . mnmlwp_assets_url() . '/img/play.png" alt="" /></div>' : '';
                 
-                return '<div class="mnmlwp-dont-print ' . $class . '" style="' . $style . '"><div class="mnmlwp-video-container ' . $class . '" data-id="' . $identifier . '" data-platform="youtube">' . $cover_html . $iframe_html . '</div></div>';                
+                return '<div class="mnmlwp-dont-print ' . $class . '"><div class="mnmlwp-video-container ' . $class . '" style="' . $style . '" data-id="' . $identifier . '" data-platform="youtube">' . $cover_html . $iframe_html . '</div></div>';                
             }
         }
 
@@ -846,7 +862,9 @@ class MNMLWP_Shortcodes
 
                 $available_size = has_image_size( 'mnmlwp-640' ) ? 'mnmlwp-640' : 'medium';
                 $image_size = ( $image_size && has_image_size( $image_size ) ) ? $image_size : $available_size;
-                
+        
+                $original_size = has_image_size( 'mnmlwp-1440' ) ? 'mnmlwp-1440' : 'mnmlwp-1680';
+                    
                 $ids = explode(',', $ids);
 
                 foreach( $ids as $key => $id )
@@ -862,7 +880,7 @@ class MNMLWP_Shortcodes
                     $key++;
 
                     $url = wp_get_attachment_image_src( $id, $image_size );
-                    $url_original = wp_get_attachment_url( $id );
+                    $url_original = wp_get_attachment_url( $id, $original_size );
 
                     $title = get_the_title( $id );
 
