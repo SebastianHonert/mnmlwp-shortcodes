@@ -126,6 +126,54 @@ class MNMLWP_Shortcodes
 
         add_shortcode( 'private', 'mnmlwp_shortcode_private_content' );
 
+        // Flex columns (wrapper)
+        if( ! function_exists('mnmlwp_shortcode_flex_columns') )
+        {
+            function mnmlwp_shortcode_flex_columns( $atts, $content = null )
+            {
+                extract( shortcode_atts( array (
+                    'style' => '',
+                    'class' => '',
+                ), $atts ) );
+
+                return '<div class="mnmlwp-flex-columns ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
+            }
+        }
+
+        add_shortcode( 'mnmlwp_flex_columns', 'mnmlwp_shortcode_flex_columns' );
+
+        // Flex column half
+        if( ! function_exists('mnmlwp_shortcode_flex_column') )
+        {
+            function mnmlwp_shortcode_flex_column( $atts, $content = null )
+            {
+                extract( shortcode_atts( array (
+                    'style' => '',
+                    'class' => '',
+                    'size' => ''
+                ), $atts ) );
+
+                $allowed = array(
+                    'half',
+                    'third',
+                    'two-third',
+                    'fourth',
+                    'three-fourth',
+                    'fifth',
+                    'two-fifth',
+                    'three-fifth'
+                );
+
+                if( ! in_array( $size, $allowed ) ) {
+                    return __('Please select one of the available column sizes: one_half, one_third, two_third, one_fourth, three_fourth, one_fifth, two_fifth, three_fifth.', 'mnmlwp');
+                }
+
+                return '<div class="mnmlwp-flex-column mnmlwp-flex-column--' . $size . ' ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
+            }
+        }
+
+        add_shortcode( 'mnmlwp_flex_column', 'mnmlwp_shortcode_flex_column' );
+
         // Row
         if( ! function_exists('mnmlwp_shortcode_row') )
         {
@@ -931,9 +979,14 @@ class MNMLWP_Shortcodes
             function mnmlwp_shortcode_flyouts( $atts, $content = null )
             {
                 extract( shortcode_atts( array (
+                    'accordion' => '',
+                    'close_all' => '',
                     'style' => '',
                     'class' => '',
                 ), $atts ) );
+
+                $class .= filter_var( $accordion, FILTER_VALIDATE_BOOLEAN ) ? ' mnmlwp-accordion' : '';
+                $class .= filter_var( $close_all, FILTER_VALIDATE_BOOLEAN ) ? ' mnmlwp-accordion--close-all' : '';
 
                 return shortcode_unautop( '<div class="mnmlwp-flyouts ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>' );
             }

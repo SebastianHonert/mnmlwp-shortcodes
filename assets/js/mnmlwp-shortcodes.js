@@ -26,7 +26,18 @@ jQuery(document).ready(function($) {
     $('.mnmlwp-flyout:not(.active) .mnmlwp-flyout-content').hide(0).toggleClass('active');
     $('.mnmlwp-flyout.active').find('.mnmlwp-flyout-title').addClass('active');
 
-    $('.mnmlwp-flyout-title').click(function() {
+    $('.mnmlwp-flyout-title').on('click', function() {
+        var flyout = $(this).closest('.mnmlwp-flyouts');
+        if (typeof flyout !== 'undefined' && flyout.hasClass('mnmlwp-accordion')) {
+            var children = flyout.find('.mnmlwp-flyout');
+            children.removeClass('active')
+
+            if (flyout.hasClass('mnmlwp-accordion--close-all')) {
+                $('.mnmlwp-flyout-content').slideUp(350);
+            } else {
+                children.find($('.mnmlwp-flyout-content')).slideUp(350);
+            }
+        }
         $(this).toggleClass('active').next('.mnmlwp-flyout-content').stop().slideToggle(350);
     });
 
