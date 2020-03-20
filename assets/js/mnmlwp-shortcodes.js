@@ -29,8 +29,15 @@ jQuery(document).ready(function($) {
     $('.mnmlwp-flyout-title').on('click', function() {
         var flyout = $(this).closest('.mnmlwp-flyouts');
         if (typeof flyout !== 'undefined' && flyout.hasClass('mnmlwp-accordion')) {
+            if ($(this).hasClass('active')) {
+                return;
+            }
+
             var children = flyout.find('.mnmlwp-flyout');
-            children.removeClass('active')
+            $.each(children, function(index, child) {
+                $(child).find('.mnmlwp-flyout-title').removeClass('active');
+                $(child).find('.mnmlwp-flyout-content').removeClass('active');
+            });
 
             if (flyout.hasClass('mnmlwp-accordion--close-all')) {
                 $('.mnmlwp-flyout-content').slideUp(350);
@@ -38,6 +45,7 @@ jQuery(document).ready(function($) {
                 children.find($('.mnmlwp-flyout-content')).slideUp(350);
             }
         }
+
         $(this).toggleClass('active').next('.mnmlwp-flyout-content').stop().slideToggle(350);
     });
 
