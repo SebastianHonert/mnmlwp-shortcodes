@@ -687,20 +687,27 @@ class MNMLWP_Shortcodes
                     'class' => '',
                     'type' => '',
                     'style' => '',
+                    'target' => '',
                 ), $atts ) );
 
-                $types_arr = explode(' ', $type);
-                
-                foreach( $types_arr as $key => $t )
-                {
-                    if( ! stristr($t, 'mnmlwp-btn-') ) {
-                        $types_arr[$key] = ' mnmlwp-btn-' . $t;
+                if( ! empty( $type ) ) {
+                    $types_arr = explode(' ', $type);
+                    
+                    foreach( $types_arr as $key => $t )
+                    {
+                        if( ! stristr($t, ' mnmlwp-btn-') ) {
+                            $types_arr[$key] = ' mnmlwp-btn-' . $t;
+                        }
                     }
+                    
+                    $types = implode(' ', $types_arr);
+                } else {
+                    $types = '';
                 }
-                
-                $types = implode(' ', $types_arr);
 
-                return '<a class="mnmlwp-btn ' . $class . ' ' . $types . '" style="' . $style . '" href="' . $href . '">' . do_shortcode( $text ) . '</a>';
+                $target = $target ? 'target="' . $target . '"' : '';
+
+                return '<a class="mnmlwp-btn ' . $class . ' ' . $types . '" style="' . $style . '" href="' . $href . '" ' . $target . '>' . do_shortcode( $text ) . '</a>';
             }
         }
 
@@ -1089,6 +1096,7 @@ class MNMLWP_Shortcodes
         }
 
         add_shortcode( 'li', 'mnmlwp_shortcode_li' );
+        
     }
 }
 

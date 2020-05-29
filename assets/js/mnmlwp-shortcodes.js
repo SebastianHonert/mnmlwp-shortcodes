@@ -67,4 +67,36 @@ jQuery(document).ready(function($) {
         $(this).html(iframe);
     });
 
+    // Tables
+    (function ($) {
+        "use strict";
+        $.fn.responsiveTable = function() { 
+      
+          var toggleColumns = function($table) {
+            var selectedControls = [];
+            $table.find('.mnmlwp-tab').each( function() {
+              selectedControls.push( $(this).attr('aria-selected') );
+            });
+            var cellCount = 0, colCount = 0;
+            var setNum = $table.find('.mnmlwp-table-cell').length / Math.max( $table.find('.mnmlwp-tab').length );
+            $table.find('.mnmlwp-table-cell').each( function() {
+              $(this).addClass('hiddenSmall');
+              if( selectedControls[colCount] === 'true' ) $(this).removeClass('hiddenSmall');
+              cellCount++;
+              if( cellCount % setNum === 0 ) colCount++; 
+            });
+          };
+          $(this).each(function(){ toggleColumns($(this)); });
+      
+          $(this).find('.mnmlwp-tab').click( function() {
+            $(this).attr('aria-selected', 'true').siblings().attr('aria-selected', 'false');
+            toggleColumns( $(this).parents('.mnmlwp-table') );
+          });
+      
+        };
+    }(jQuery));
+      
+      
+    $('.js-mnmlwp-table-tabs').responsiveTable();
+
 });
