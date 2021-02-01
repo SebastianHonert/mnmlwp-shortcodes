@@ -184,7 +184,7 @@ class MNMLWP_Shortcodes
                     'class' => '',
                 ), $atts ) );
 
-                return '<div class="row ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
+                return '<div class="mnmlwp-row ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
             }
         }
 
@@ -200,7 +200,7 @@ class MNMLWP_Shortcodes
                     'class' => '',
                 ), $atts ) );
 
-                return '<div class="column ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
+                return '<div class="mnmlwp-column ' . $class . '" style="' . $style . '">' . do_shortcode( $content ) . '</div>';
             }
         }
 
