@@ -5,7 +5,7 @@ Plugin Name: mnmlWP Basic Shortcodes
 Plugin URI: https://minimalwordpress.com
 Description: This plugin provides the basic shortcodes for the mnmlWP Theme.
 Author: Sebastian Honert
-Version: 0.2.4
+Version: 0.2.5
 Author URI: https://sebastianhonert.com
 Text Domain: mnmlwp-shortcodes
 License: GNU General Public License v2 or later
